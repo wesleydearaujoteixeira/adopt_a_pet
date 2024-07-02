@@ -2,16 +2,17 @@ const mongoose = require('mongoose');
 
 async function main() {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:51794/getapet', {
+        console.log("Tentando conectar ao MongoDB...");
+        await mongoose.connect('mongodb://127.0.0.1:51821/getapet', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            serverSelectionTimeoutMS: 5000, // Ajuste o tempo limite de seleção do servidor
-            socketTimeoutMS: 45000, // Ajuste o tempo limite do soquete
-            connectTimeoutMS: 10000 // Ajuste o tempo limite de conexão
+            serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 45000,
+            connectTimeoutMS: 10000
         });
         console.log("Conectou ao mongoose");
     } catch (err) {
-        console.error('Erro ao conectar ao MongoDB:', err.message);
+        console.error('Erro ao conectar ao MongoDB =>>>>>:', err.message);
     }
 }
 
