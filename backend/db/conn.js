@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
 async function main() {
+
+    const PORT = 60497;
+
     try {
         console.log("Tentando conectar ao MongoDB...");
-        await mongoose.connect('mongodb://127.0.0.1:51821/getapet', {
+        
+        await mongoose.connect(`mongodb://127.0.0.1:${PORT}/getapet`, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,

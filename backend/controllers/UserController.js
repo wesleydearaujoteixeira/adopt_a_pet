@@ -60,6 +60,7 @@ module.exports = class UserController {
             // Create a new user
 
             console.log('Creating new user');
+            
             const user = new User({
                 name,
                 email,
@@ -98,19 +99,19 @@ module.exports = class UserController {
 
     static async Login(req, res) {
 
-        const { email, password } = req.body;
+        const {email, password} = req.body;
 
         if(!email) {
             res.status(422).json({ message: 'Email is required' });
             return;
         }
-
+ 
         if(!password){
             res.status(422).json({ message: 'Password is required' });
             return;
         }
 
-        // check if user exists
+       // check if user exists
 
         const user = await User.findOne({email});
         
@@ -118,7 +119,6 @@ module.exports = class UserController {
             res.status(422).json({ message: 'Invalid credentials and wrong email'});
             return;
         }
-
 
         // check if password is correct
 
@@ -136,17 +136,16 @@ module.exports = class UserController {
     static async checkUser (req, res) {
 
         let currentUser;
-
         console.log(req.headers.authorization);
 
         if(req.headers.authorization) {
+
             console.log("Checking Token Files...");
 
             const token = tokenId(req);
             const decode =jwt.verify(token, "OurSecret");
 
-            currentUser =   await User.findById(decode.id);
-
+            currentUser = await User.findById(decode.id)
             currentUser.password = undefined;
         }
         
@@ -159,7 +158,31 @@ module.exports = class UserController {
     }
 
 
+    static async getUserById(req, res) {
 
+        const id = req.params.id;
+
+        const user = await User.findById(id).select('-password');
+
+        if(!user){
+            res.status(422).json({
+                message: "User is not found! "
+            })
+
+        }
+
+        res.status(200).json({ user });
+
+
+    }
+
+    static async userUpdate (req, res) {
+            res.status(422).json({message: "Acho que foi"});
+            return;
+    }
+
+
+    
 
 
 }
