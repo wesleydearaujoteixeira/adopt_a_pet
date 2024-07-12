@@ -8,14 +8,14 @@ function checkToken(req, res, next) {
         return res.status(401).json({ error: 'No authorization header provided' });
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
     if (!token) {
         return res.status(401).json({ error: 'No token provided' });
     }
 
     try {
-
+        
         const decoded = jwt.verify(token, "OurSecret");
         req.user = decoded;
         next();

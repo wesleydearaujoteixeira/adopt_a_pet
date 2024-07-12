@@ -3,9 +3,11 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
 // importando os helpers
 
 const tokenId = require('../helpers/get-a-token');
+const getUserToken = require('../helpers/get-user-bytoken');
 
 module.exports = class UserController {
 
@@ -166,7 +168,7 @@ module.exports = class UserController {
 
         if(!user){
             res.status(422).json({
-                message: "User is not found! "
+                message: " User is not found! "
             })
 
         }
@@ -177,12 +179,69 @@ module.exports = class UserController {
     }
 
     static async userUpdate (req, res) {
-            res.status(422).json({message: "Acho que foi"});
-            return;
-    }
+           
+        const id = req.params.id;
+
+        const user = await User.findById(id);
+
+
+        if(!user) {
+            res.status(422).json({message: "User has not been found"})
+        }
+        
+        const { name, email, phone, password, confirmpassword} = req.body;
 
 
     
+        if(req.file){
+            user.image = req.file.filename;
+        }
 
+
+        if(!name) { 
+            res.status(422).json({message: " Nome has not set "});
+            return;
+        }
+
+        user.name = name;
+
+        // checking if the email already taken.
+
+        const userExists = await User.findOne({email: email});
+
+
+        if(!email){
+            res.status(422).json({message: "Email is required!"});
+        }
+
+        if(user.email !== email){
+            res.status(422).json({message: "There's a problem with your email"});
+            return;
+        }
+
+        user.email = email;
+
+        if(!phone){
+            res.status(422).json({message: " Phone has not been set "})
+        }
+
+        user.phone = phone;
+
+        if(!password){
+            res.status(422).json({message: " You has not set your password "})
+        }
+
+        if(password !== confirmpassword){
+            res.status(422).json({message: " Password is not equal"})
+
+        }
+
+        user.password = password;
+
+
+        await user.save();
+        res.status(200).json({message: " Usuário editado! "});
+    
+    }
 
 }

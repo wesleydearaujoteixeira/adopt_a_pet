@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 async function main() {
 
-    const PORT = 60497;
+    const PORT = 49299;
 
     try {
         console.log("Tentando conectar ao MongoDB...");
