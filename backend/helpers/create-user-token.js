@@ -9,9 +9,12 @@ const createUserToken = async (user, req, res) => {
 // restart 
 
 res.json({
+
+
     message: 'Your token has been automatically generated',
     token,
     userId: user._id,
+
 });
 
 }

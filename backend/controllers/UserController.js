@@ -11,9 +11,9 @@ const getUserToken = require('../helpers/get-user-bytoken');
 
 module.exports = class UserController {
 
-
     static async register(req, res) {
-        console.log('Received registration request');
+
+        console.log(' Received registration request ');
         const { name, email, phone, password, status, confirmpassword } = req.body;
 
         // Validate required fields
@@ -137,33 +137,31 @@ module.exports = class UserController {
 
     static async checkUser (req, res) {
 
-        let currentUser;
-        console.log(req.headers.authorization);
-
-        if(req.headers.authorization) {
-
-            console.log("Checking Token Files...");
-
-            const token = tokenId(req);
-            const decode =jwt.verify(token, "OurSecret");
-
-            currentUser = await User.findById(decode.id)
-            currentUser.password = undefined;
-        }
+        try {
+            // Sua lógica para encontrar o usuário
+            const currentUser = await User.findById(req.userId);
         
-        else{
-            currentUser = null;
-        }
+            // Verifique se currentUser não é nulo
+            if (!currentUser) {
+              return res.status(404).json({ message: 'Usuário não encontrado' });
+            }
+        
+            // Remover a senha do objeto do usuário antes de retornar
+            currentUser.password = undefined;
 
-        res.status(200).send(currentUser);
-
+            // Retorne a resposta com o usuário encontrado
+            return res.status(200).json(currentUser);
+        
+          } catch (error) {
+            console.error('Erro ao verificar o usuário:', error.message);
+            return res.status(500).json({ message: 'Erro interno do servidor' });
+          }
     }
 
 
     static async getUserById(req, res) {
 
         const id = req.params.id;
-
         const user = await User.findById(id).select('-password');
 
         if(!user){
@@ -175,24 +173,21 @@ module.exports = class UserController {
 
         res.status(200).json({ user });
 
-
     }
 
     static async userUpdate (req, res) {
-           
+
         const id = req.params.id;
-
         const user = await User.findById(id);
-
 
         if(!user) {
             res.status(422).json({message: "User has not been found"})
         }
-        
+
+
         const { name, email, phone, password, confirmpassword} = req.body;
 
 
-    
         if(req.file){
             user.image = req.file.filename;
         }
@@ -206,9 +201,7 @@ module.exports = class UserController {
         user.name = name;
 
         // checking if the email already taken.
-
         const userExists = await User.findOne({email: email});
-
 
         if(!email){
             res.status(422).json({message: "Email is required!"});
@@ -220,6 +213,7 @@ module.exports = class UserController {
         }
 
         user.email = email;
+
 
         if(!phone){
             res.status(422).json({message: " Phone has not been set "})
@@ -233,11 +227,9 @@ module.exports = class UserController {
 
         if(password !== confirmpassword){
             res.status(422).json({message: " Password is not equal"})
-
         }
 
         user.password = password;
-
 
         await user.save();
         res.status(200).json({message: " Usuário editado! "});

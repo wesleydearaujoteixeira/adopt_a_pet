@@ -22,7 +22,7 @@ const imageStorage = multer.diskStorage({
     },
 
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + String(Math.floor(Math.random() * 10 )) + path.extname(file.originalname));
 
     }
 
@@ -33,21 +33,17 @@ const imageUpload = multer({
     storage: imageStorage,
     fileFilter(req, file, cb) {
 
-        if(!file.originalname.match(/\.(png|jpg)$/)) {
-            return cb(new Error("Please, send only images jpg or png"))
+        if(!file.originalname.match(/\.(jpeg|jpg)$/)) {
+            return cb(new Error("Please, send only images jpeg or png"))
         }
 
     cb(undefined, true);
 
     }
 
-
 });
 
 
 module.exports = { imageUpload };
-
-
-
 
 
