@@ -13,10 +13,16 @@ const { imageUpload } = require('../helpers/images-upload');
 
 petRouter.post('/create/:id', verifyToken, imageUpload.array('images'), PetController.create);
 petRouter.get('/', PetController.getALL);
-petRouter.get('/mypets/:id', PetController.getAllUserPets);
-petRouter.get('/myadoptions/:id', PetController.getUserAdoptions);
+petRouter.get('/mypets/:id', verifyToken,  PetController.getAllUserPets);
+petRouter.get('/myadoptions/:id', verifyToken,  PetController.getUserAdoptions);
 petRouter.get('/:id', PetController.getPetById);
 petRouter.delete('/:id', verifyToken, PetController.deletePetById);
-petRouter.patch('/:id', verifyToken, PetController.updatedPet);
+petRouter.patch('/:id', verifyToken,  imageUpload.array('images'),  PetController.updatedPet);
+petRouter.patch('/schedule/:id', verifyToken, PetController.schedule);
+
+
+
+
+
 
 module.exports = petRouter;

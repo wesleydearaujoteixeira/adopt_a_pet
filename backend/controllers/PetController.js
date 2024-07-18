@@ -230,91 +230,123 @@ module.exports = class PetController {
         }
     }
 
-
-  
-        
-    
-    
     
     static async updatedPet(req, res) {
-
-
-
+        
         const id = req.params.id;
-        const { name, age, weight, color, available } = req.body;
-        const images = req.files;
-    
-        const updatedPet = {};
+        
+        const { name, age, weight, color } = req.body;
+
     
         // Verifica se o ID é válido
         if (!ObjectId.isValid(id)) {
-            res.status(422).json({ message: "Invalid Id!" });
-            return;
+            return res.status(422).json({ message: "Invalid Id!" });
         }
     
+        try {
             // Verifica se o pet existe
             const pet = await Pet.findOne({ _id: id });
     
             if (!pet) {
-                res.status(422).json({ message: "Pet not found" });
-                return;
+                return res.status(422).json({ message: "Pet not found" });
             }
-    
+
+
             // Verifica se o usuário logado registrou o pet
-            const user = req.user;  // Assumindo que o usuário está definido no req por middleware
+            const user = req.user; // Assumindo que o usuário está definido no req por middleware
     
             if (pet.user._id.toString() !== user.id.toString()) {
-                res.status(422).json({ message: "User not authenticated to update" });
-                return;
+                return res.status(403).json({ message: "User not authenticated to update" });
             }
-
     
             // Verifica e atualiza os campos
-            if (name){ 
-                return  updatedPet.name = name
-            }else{
-                res.status(422).json({ message: "Nomeeeee" });
-            }
-
-            if (age){ 
-                return updatedPet.age = age
-
-            }else{
-                res.status(422).json({ message: "Ageeeeee" });
-
-            }
+            const updatedPet = {};
+            if (name) updatedPet.name = name;
+            if (age) updatedPet.age = age;
+            if (weight) updatedPet.weight = weight;
+            if (color) updatedPet.color = color;
 
 
-            if (weight) { 
-                return updatedPet.weight = weight
+            const images = req.files;
 
-            }else {
-                res.status(422).json({ message: "pesoooooo" });
-
-            }
-            if (color){ 
-                return updatedPet.color = color;
-            }else {
-                res.status(422).json({ message: " COOOOOOR " });
-
-            }
-    
             // Verifica e atualiza as imagens
             if (images && images.length > 0) {
+
                 updatedPet.images = [];
 
-                images.map((img) => updatedPet.images.push(img.filename) );
-            }else {
-                res.status(422).json({ message: "User not authenticated to update" });
+                images.map((img) => updatedPet.images.push(img.filename));
+            } 
 
-            }
-
-            // Atualiza o pet
-            await Pet.findByIdAndUpdate(id, updatedPet);
+            // Atualiza o pet no servidor
+            const result = await Pet.findByIdAndUpdate(new ObjectId(id), updatedPet, { new: true });
     
-            res.status(200).json({ message: "Pet updated!", });
-      
+            if (!result) {
+                return res.status(500).json({ message: "Failed to update pet." });
+            }
+            return res.status(200).json({ message: "Pet updated!", pet: result });
+        } catch (error) {
+            console.error(error); // Isso vai imprimir o erro no console para depuração
+            return res.status(500).json({ message: "An error occurred while updating the pet.", error: error.message });
+        }
     }
+
+
+static async schedule(req, res) {
+    const id = req.params.id;
+
+    // Verifica se o ID é válido
+    if (!ObjectId.isValid(id)) {
+        return res.status(422).json({ message: "Invalid Id!" });
+    }
+
+    try {
+        const pet = await Pet.findOne({ _id: new ObjectId(id) });
+
+        if (!pet) {
+            return res.status(404).json({ message: "Pet not found" });
+        }
+
+        const token = getToken(req);
+        const user = await getUserByToken(token);
+
+        // Converta ambos os IDs para strings e compare
+        if (pet.user._id.toString() === user._id.toString()) {
+            return res.status(422).json({
+                message: "You can't schedule an appointment with your own pet."
+            });
+        }
+
+        if (pet.adopter) {
+            if (pet.adopter._id.toString() === user._id.toString()) {
+                return res.status(422).json({
+                    message: "You already scheduled an appointment with this pet."
+                });
+            }
+        }
+
+        pet.adopter = {
+            _id: user._id,
+            name: user.name,
+            image: user.image,
+            phone: user.phone
+        };
+
+        await Pet.findByIdAndUpdate(new ObjectId(id), pet, { new: true });
+
+        return res.status(200).json({
+            message: `A visita foi agendada, entre em contato com o ${pet.user.name} pelo telefone ${pet.user.phone}`
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "An error occurred while scheduling the appointment.",
+            error: error.message
+        });
+    }
+    
+
+    }
+
 
 
 }
