@@ -19,7 +19,7 @@ petRouter.get('/:id', PetController.getPetById);
 petRouter.delete('/:id', verifyToken, PetController.deletePetById);
 petRouter.patch('/:id', verifyToken,  imageUpload.array('images'),  PetController.updatedPet);
 petRouter.patch('/schedule/:id', verifyToken, PetController.schedule);
-
+petRouter.patch('/conclude/:id', verifyToken, PetController.concludePet);
 
 
 

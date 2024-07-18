@@ -8,10 +8,10 @@ function checkToken(req, res, next) {
         return res.status(401).json({ error: 'Acesso Negado' });
     }
 
-    const token = authHeader.split(" ")[1];
+    const token = authHeader.split(' ')[1];
 
     if (!token) {
-        return res.status(401).json({ error: 'No token provided' });
+        return res.status(401).json({ error: 'Token não foi fornecido!!!' });
     }
 
     try {
@@ -21,7 +21,7 @@ function checkToken(req, res, next) {
         next();
 
     } catch (error) {
-        return res.status(400).json({ error: 'Invalid token' });
+        return res.status(400).json({ error: 'Token Inválido' });
     }
 }
 

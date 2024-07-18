@@ -306,6 +306,7 @@ static async schedule(req, res) {
             return res.status(404).json({ message: "Pet not found" });
         }
 
+
         const token = getToken(req);
         const user = await getUserByToken(token);
 
@@ -342,8 +343,55 @@ static async schedule(req, res) {
             message: "An error occurred while scheduling the appointment.",
             error: error.message
         });
+    
+    
     }
     
+
+    }
+
+
+    static async concludePet(req, res) {
+        const id = req.params.id;
+
+
+
+        if (!ObjectId.isValid(id)) {
+            return res.status(422).json({ message: "Invalid Id!" });
+        }
+    
+        try {
+            const pet = await Pet.findOne({ _id: new ObjectId(id) });
+    
+            if (!pet) {
+                return res.status(404).json({ message: "Pet not found" });
+            }
+    
+    
+            const token = getToken(req);
+            const user = await getUserByToken(token);
+    
+            // Converta ambos os IDs para strings e compare
+            if (pet.user._id.toString() !== user._id.toString()) {
+                return res.status(422).json({
+                    message: "You can't schedule an appointment with your own pet."
+                });
+            }
+            pet.available = false
+
+            await Pet.findByIdAndUpdate(new ObjectId(id), pet, { new: true });
+
+            res.status(200).json({message: " Pet adotado com sucesso!!! "})
+
+        }catch(error){
+            console.error(error);
+            return res.status(500).json({
+                message: "Ocorreu um erro no processo de adoção.",
+                error: error.message
+            });
+        }
+    
+
 
     }
 

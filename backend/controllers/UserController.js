@@ -100,38 +100,43 @@ module.exports = class UserController {
 
 
     static async Login(req, res) {
-
-        const {email, password} = req.body;
-
-        if(!email) {
+        const { email, password } = req.body;
+    
+        // Check if email and password are provided
+        if (!email) {
             res.status(422).json({ message: 'Email is required' });
             return;
         }
- 
-        if(!password){
+    
+        if (!password) {
             res.status(422).json({ message: 'Password is required' });
             return;
         }
+    
+        try {
+            // Check if user exists
+            const user = await User.findOne({ email });
 
-       // check if user exists
+            if (!user) {
+                res.status(401).json({ message: 'Invalid email or password' });
+                return;
+            }
+    
+            // Check if password is correct
+            if(password !== user.password) {
+                res.status(422).json({ message: 'Invalid password' });
+                // retorna sempre algo pra não da erro no insomnia
+                return;
+            }
 
-        const user = await User.findOne({email});
-        
-        if (!user) {
-            res.status(422).json({ message: 'Invalid credentials and wrong email'});
-            return;
+            // Generate and send token
+            await createUserToken(user, req, res);
+    
+        } catch (error) {
+            // Handle any unexpected errors
+            res.status(500).json({ message: 'An error occurred during login', error: error.message });
         }
 
-        // check if password is correct
-
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (!isMatch) {
-            res.status(422).json({ message: 'Invalid credentials and wrong password'});
-            return;
-        }
-
-        await createUserToken(user, req, res);
 
     }
 
@@ -178,7 +183,10 @@ module.exports = class UserController {
     static async userUpdate (req, res) {
 
         const id = req.params.id;
-        const user = await User.findById(id);
+
+        const token = tokenId(req);
+
+        const user = await getUserToken(token);
 
         if(!user) {
             res.status(422).json({message: "User has not been found"})
