@@ -2,5 +2,21 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Helvetica';
 }
 
+h1 {
+  color: #16479d;
+  margin-bottom: 1em;
+  font-size: 2.1em;
+}
+
+.bold {
+  font-weight: bold;
+  color: #16479d;
+}
+
+.sectionRegister {
+  max-width: 350px;
+  margin: 0 auto;
+}

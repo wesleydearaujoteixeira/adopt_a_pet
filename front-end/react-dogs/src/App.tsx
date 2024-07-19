@@ -1,13 +1,44 @@
 import './App.css'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import  Home  from './components/pages/Home';
+import { Login } from './components/pages/Auth/Login';
+import { Register } from './components/pages/Auth/Register';
+
+
+
+const router = createBrowserRouter([
+
+    {
+      path: '/',
+      element: <Home/>,
+      children: [
+        
+      {
+        path: '/login',
+        element: <Login/>
+      },
+
+      {
+        path: '/register',
+        element: <Register/>
+      
+      },
+    
+    ]
+    }
+
+
+]);  
+
+router
+
 
 function App() {
-  return (  
-    <main> 
-      <h1>
-        I'ts running on React's Application!
-      </h1>
-  </main>
 
+  return (  
+        <>
+          <RouterProvider router={router}/>
+        </>
   );
 }
 
