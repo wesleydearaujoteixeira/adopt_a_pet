@@ -13,8 +13,10 @@ module.exports = class UserController {
 
     static async register(req, res) {
 
-        console.log(' Received registration request ');
-        const { name, email, phone, password, status, confirmpassword } = req.body;
+        console.log(   ' registrando um Usuário no sistema  ');
+
+
+        const { name, email, phone, password } = req.body;
 
         // Validate required fields
         if (!name) {
@@ -32,15 +34,14 @@ module.exports = class UserController {
             return;
         }
 
-        if (!password || password.length < 8) {
-            res.status(400).json({ message: 'Password must be at least 8 characters long' });
+        if (!password) {
+            res.status(400).json({ message: 'Enviei a senha ' });
             return;
         }
 
-        if (password !== confirmpassword) {
-            res.status(400).json({ message: 'Passwords do not match' });
-            return;
-        }
+    
+
+     
 
         try {
             // Check if user with the same email already exists
@@ -55,10 +56,6 @@ module.exports = class UserController {
 
             // Create a hashed password
 
-            console.log('Creating hashed password');
-            const salt = await bcrypt.genSalt(12);
-            const passwordHash = await bcrypt.hash(password, salt);
-
             // Create a new user
 
             console.log('Creating new user');
@@ -67,8 +64,7 @@ module.exports = class UserController {
                 name,
                 email,
                 phone,
-                status,
-                password: passwordHash
+                password,
             });
 
             const newUser = await user.save();
@@ -81,12 +77,10 @@ module.exports = class UserController {
     }
 
     static async data(req, res) {
-
-        console.log('Received data request');
         
-        const { status } = req.query;
+        const id = req.params.id;
 
-        const datas = await User.find({status: status});
+        const datas = await User.findById({_id: id});
 
         if (!datas) {
             res.status(404).json({ message: 'No data found' });
