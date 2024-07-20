@@ -13,7 +13,7 @@ export const Register = () => {
     phone:string,
     email: string,
     password: string,
-    confirmPassword: string,
+    confirmpassword: string,
   }
 
 
@@ -22,8 +22,9 @@ export const Register = () => {
     phone: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    confirmpassword: '',
   });
+
 
   function handleChange(e:  ChangeEvent<HTMLInputElement>) {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -79,8 +80,8 @@ export const Register = () => {
         <Inputs
           text="Confirmar Senha"
           type="password"
-          name="confirmPassword"
-          value={user.confirmPassword}
+          name="confirmpassword"
+          value={user.confirmpassword}
           placeholder="Confirme sua Senha"
           handleOnChange={handleChange}
         />

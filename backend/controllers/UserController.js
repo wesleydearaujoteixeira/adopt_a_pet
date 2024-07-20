@@ -1,7 +1,5 @@
 const createUserToken = require('../helpers/create-user-token');
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 
 // importando os helpers
@@ -16,7 +14,7 @@ module.exports = class UserController {
         console.log(   ' registrando um Usuário no sistema  ');
 
 
-        const { name, email, phone, password } = req.body;
+        const { name, email, phone, password, confirmpassword} = req.body;
 
         // Validate required fields
         if (!name) {
@@ -35,12 +33,19 @@ module.exports = class UserController {
         }
 
         if (!password) {
-            res.status(400).json({ message: 'Enviei a senha ' });
+            res.status(400).json({ message: 'Crie uma senha ' });
             return;
         }
 
-    
+        if(!confirmpassword) {
+            res.status(400).json({ message: 'Não confirmou a senha!'});
+            return;
+        }
 
+        if(password != confirmpassword) {
+            res.status(400).json({ message: 'Senhas não conferem, confirme novamente! ' });
+            return;
+        }
      
 
         try {
@@ -65,6 +70,7 @@ module.exports = class UserController {
                 email,
                 phone,
                 password,
+                confirmpassword
             });
 
             const newUser = await user.save();

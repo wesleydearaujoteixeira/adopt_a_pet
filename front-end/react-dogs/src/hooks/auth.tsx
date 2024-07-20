@@ -9,7 +9,7 @@ export type UserTypes = {
     phone: string;
     email: string;
     password: string;
-    confirmPassword: string;
+    confirmpassword: string;
 } 
 
 export default function useAuth() {
