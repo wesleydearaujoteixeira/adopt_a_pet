@@ -3,6 +3,9 @@ import Inputs from "../../Inputs/Inputs";
 import styles from "../../Inputs/Form.module.css";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../../context/UserContext";
+import { FaEyeSlash } from "react-icons/fa";
+
+import style from '../Auth/FormRegister.module.css'
 
 export const Register = () => {
 
@@ -16,6 +19,9 @@ export const Register = () => {
     confirmpassword: string,
   }
 
+
+  const [status, setStatus] = useState(false);
+  const [estatic, setEstatic] = useState(false);
 
   const [user, setUser] = useState  <TypeUser> ({
     name: '',
@@ -41,10 +47,22 @@ export const Register = () => {
     // Handle form submission
   };
 
+
+  const handleShowPassword = () =>  {
+      setStatus(!status);
+  };
+
+
+  const handleShowPasswordTwo = () => {
+    setEstatic(!estatic);
+  }
+
+
   return (
     <section className="sectionRegister">
       <h1>Register</h1>
-      <form method="post" onSubmit={handleSubmit}>
+
+      <form className={style.Form}   method="post" onSubmit={handleSubmit}>
         <Inputs
           text="Nome"
           type="text"
@@ -53,6 +71,7 @@ export const Register = () => {
           placeholder="Digite seu Nome"
           handleOnChange={handleChange}
         />
+
         <Inputs
           text="Telefone"
           type="text"
@@ -61,6 +80,7 @@ export const Register = () => {
           placeholder="Digite seu número "
           handleOnChange={handleChange}
         />
+
         <Inputs
           text="E-mail"
           type="email"
@@ -71,7 +91,7 @@ export const Register = () => {
         />
         <Inputs
           text="Senha"
-          type="password"
+          type={status === true ? "text" : "password"}
           name="password"
           value={user.password}
           placeholder="Digite sua senha "
@@ -79,12 +99,23 @@ export const Register = () => {
         />
         <Inputs
           text="Confirmar Senha"
-          type="password"
+          type={estatic === true ? "text" : "password"}
           name="confirmpassword"
           value={user.confirmpassword}
           placeholder="Confirme sua Senha"
           handleOnChange={handleChange}
         />
+        
+        
+        <div className={style.figuteOutEyes} >
+          <FaEyeSlash onClick={() => handleShowPassword()} />
+        </div>
+
+
+        <div className={style.figuteOutEyesTwo}>
+          <FaEyeSlash onClick={() => handleShowPasswordTwo()}/>
+        </div>
+
         <button type="submit" className={styles.button}>Registrar</button>
       </form>
       <p>Já tem uma conta? <Link to="/login">Clique aqui</Link></p>

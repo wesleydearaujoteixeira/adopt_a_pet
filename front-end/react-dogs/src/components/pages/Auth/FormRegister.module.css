@@ -1,0 +1,23 @@
+.Form {
+    position: relative;
+}
+
+.figuteOutEyes {
+    position: absolute;
+    top: 62%;
+    right: 0;
+    left: 92%;
+    bottom: 0;
+    cursor: pointer;
+}
+
+
+.figuteOutEyesTwo {
+    position: absolute;
+    top: 81%;
+    left: 92%;
+    right: 100%;
+    bottom: 0;
+    cursor: pointer;
+
+}

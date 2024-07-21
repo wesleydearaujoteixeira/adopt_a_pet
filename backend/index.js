@@ -8,9 +8,6 @@ app.use(cors());
 
 app.use(express.json());
 
-// middlewares's sections
-
-
 // Public Folder for Images
 
 app.use(express.static('public'));

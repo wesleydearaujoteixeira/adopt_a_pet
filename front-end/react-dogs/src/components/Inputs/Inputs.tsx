@@ -28,6 +28,8 @@ const Inputs: React.FC<InputsProps> = ({ type, text, name, placeholder, handleOn
         value={value} 
         multiple={multiple ? true : undefined} // Conditionally add the "multiple" attribute
       />
+  
+    
     </div>
   );
 }

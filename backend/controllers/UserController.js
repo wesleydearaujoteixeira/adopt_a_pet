@@ -1,5 +1,7 @@
 const createUserToken = require('../helpers/create-user-token');
 const User = require('../models/User');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 
 // importando os helpers
@@ -59,9 +61,6 @@ module.exports = class UserController {
                 return;
             }
 
-            // Create a hashed password
-
-            // Create a new user
 
             console.log('Creating new user');
             
@@ -74,6 +73,44 @@ module.exports = class UserController {
             });
 
             const newUser = await user.save();
+
+            
+            
+            //Enviar email com o Nodemailer 
+            
+
+
+                    // Crie um transporte
+                    let transporter = nodemailer.createTransport({
+                        service: 'gmail', // Você pode usar qualquer serviço de email (Gmail, Outlook, etc.)
+                        auth: {
+                            user: 'wesleyaraujoteixeira98@gmail.com', // Seu email
+                            pass: 'CANNABIS27' // Sua senha de email
+                        }
+                    });
+
+                    // Defina as opções do email
+                    let mailOptions = {
+                        from: 'wesleyaraujoteixeira98@gmail.com', // Email do remetente
+                        to: `${email}`, // Email do destinatário
+                        subject: 'Você está Cadastrado',
+                        text: `Seja bem vindo, ${name}`, // Texto do email
+                    };
+
+                    // Envie o email
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                            console.log('Erro ao enviar email:', error);
+                        } else {
+                            console.log('Email enviado:');
+                        }
+                });
+
+            
+            
+
+
+
            await createUserToken(newUser, req, res);
 
         } catch (error) {
