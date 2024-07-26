@@ -3,7 +3,10 @@ import useAuth, { UserTypes } from "../hooks/auth";
 
 
 type ContextTypes = {
-    register:  (User: UserTypes) => void;
+    register:  (User: UserTypes) => void,
+    authenticate: boolean,
+    logout: () => void,
+    Login: (User: UserTypes) => void
 
 }
 
@@ -11,10 +14,10 @@ export const UserContext = createContext <ContextTypes | null> (null);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
-  const { register } = useAuth();
+  const { authenticate, register, logout, Login } = useAuth();
 
   return (
-    <UserContext.Provider value={{register}}>
+    <UserContext.Provider value={{register, authenticate, logout, Login }}>
       {children}
     </UserContext.Provider>
   );

@@ -1,34 +1,60 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import Logo from '../../../assets/pet_dog.png';
 import styles from './NavBar.module.css';
+import { useAuthContext } from '../../../context/UserContext';
+
 
 const NavBar = () => {
+    const  auth  = useAuthContext();
 
-  return (
+    auth?.authenticate 
 
-    <nav className={styles.navBar}>
+   // const logOut = auth?.logout();
 
-        
+    function Exit() {
+        auth?.logout();
+        window.location.href = '/';
+        window.location.reload();
+        console.log('Saiu');
+ 
+    }
+  
+
+    return (
+        <nav className={styles.navBar}>
             <Link to="/" className={styles.navBar_logo}> 
                 <img src={Logo} alt="logo" />
-                <h1> Adopter A Pet </h1>
+                <h1>Adopter A Pet</h1>
             </Link>
 
-        <ul>
-            <li>
-                <Link to="/"> Adotar </Link>
-            </li>
+                <ul>
+                    <li>
+                        <Link to="/">Adotar</Link>
+                    </li>
 
-            <li>
-                <Link to="/login"> Entrar </Link>
-            </li>
+                    {!auth?.authenticate && (
+                        <>
+                            <li>
+                                <Link to="/login"> Entrar </Link>
+                            </li>
 
-            <li>
-                <Link to="/register"> Registrar </Link>
-            </li>
-        </ul>
-    </nav>
-  )
-}
+                            <li>
+                                <Link to="/register"> Registrar </Link>
+                            </li>                
+                        </>
+                    )}
+                       {auth?.authenticate && (
+                        <>
+                            <li onClick={() => Exit()}>
+                                <Link to={'/login'}> Sair </Link>
+                            </li> 
+                        </>
+                    )}
 
-export default NavBar
+
+                </ul>
+        </nav>
+    );
+};
+
+export default NavBar;

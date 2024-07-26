@@ -6,6 +6,7 @@ import { useAuthContext } from "../../../context/UserContext";
 import { FaEyeSlash } from "react-icons/fa";
 
 import style from '../Auth/FormRegister.module.css'
+import { Message } from "../layout/Message";
 
 export const Register = () => {
 
@@ -60,6 +61,9 @@ export const Register = () => {
 
   return (
     <section className="sectionRegister">
+
+      <Message/>
+      
       <h1>Register</h1>
 
       <form className={style.Form}   method="post" onSubmit={handleSubmit}>
