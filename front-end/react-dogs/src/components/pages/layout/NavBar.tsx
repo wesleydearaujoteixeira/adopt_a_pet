@@ -28,9 +28,6 @@ const NavBar = () => {
             </Link>
 
                 <ul>
-                    <li>
-                        <Link to="/">Adotar</Link>
-                    </li>
 
                     {!auth?.authenticate && (
                         <>
@@ -45,6 +42,14 @@ const NavBar = () => {
                     )}
                        {auth?.authenticate && (
                         <>
+                             <li>
+                                <Link to={'/profile'}> Profile </Link>
+                            </li>
+
+                            <li>
+                                <Link to="/">Adotar</Link>
+                            </li>
+
                             <li onClick={() => Exit()}>
                                 <Link to={'/login'}> Sair </Link>
                             </li> 

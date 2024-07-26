@@ -3,8 +3,7 @@ import Inputs from '../../Inputs/Inputs';
 import {Link} from 'react-router-dom';
 
 import { useAuthContext } from '../../../context/UserContext'
-
-import style from '../Auth/FormRegister.module.css'
+import styles from './Login.module.css';
 
 
 
@@ -42,9 +41,11 @@ export const Login = () => {
 
 
   return (
-    <section>
+    <section className={styles.LoginContent}>
         <h1>Login</h1>
         <form action="post" onSubmit={(e) => handleSubmit(e)}>
+        
+        
           <Inputs
             text="Email"
             type="email"
@@ -63,9 +64,8 @@ export const Login = () => {
             handleOnChange={handleChange}
           />
 
-        <button> Logar </button>
+        <button className={styles.btnLogin}> Login  </button>
         </form>
-
         <p> Não tem uma conta? <Link to={'/register'}> Acesse aqui </Link></p>
     </section>
   )

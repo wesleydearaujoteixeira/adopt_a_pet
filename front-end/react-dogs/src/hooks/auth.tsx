@@ -65,10 +65,12 @@ export default function useAuth() {
             setFlashMessage(msgText, msgType)
         }
 
-
         function Login (user: UserTypes) {
+
             api.post('/users/login', user).then((response) => {
-                console.log(response.data)
+                setAutenticate(true);
+                console.log(response.data);
+                navigate('/');
                 return response.data
             })
             .catch((err) => {
@@ -79,19 +81,18 @@ export default function useAuth() {
 
 
         function logout () {
-
-            confirm('Você tem certeza que deseja deslogar?');
             
                 setTimeout(() => {
                     localStorage.removeItem('token');
                     setAutenticate(false);
-                 }, 1000);  
+                    api.defaults.headers.Authorization = null;
+                }, 1000);  
                
     
         }
 
 
-    return {authenticate,  register, logout, Login }
+    return {authenticate,  register, logout, Login, setAutenticate }
 
 
 }
