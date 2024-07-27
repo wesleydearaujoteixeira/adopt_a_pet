@@ -7,55 +7,101 @@ import { api } from '../../../utils/api';
 export function Profile () {
     const obj = useAuthContext();
 
-    const [user, setUser] = useState({});
-    const [token] = useState(localStorage.getItem('token') || '');
+    const [preview, setPreview] = useState <string> ('');
+
+    const [user, setUser] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        password: '',
+        confirmpassword: '',
+        image: null,
+    });
+
+    const id = JSON.parse(localStorage.getItem('userID') || 'null');
+    const token = JSON.parse(localStorage.getItem('tokenUserId') || '');
 
     useEffect(() => {
-        api.get('/users/checkUser', {
+        if (id && token) {
+            api.get(`users/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((response) => {
+                setUser(response.data.user);
+            }).catch(error => {
+                console.log("Error:", error);
+            });
+        }
+    }, [id, token]);
+
+
+    function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+        if (e.target.files && e.target.files.length > 0) {
+            setUser({ ...user, [e.target.name]: e.target.files[0] });
+            const files: string = e.target.files[0]
+            setPreview(files)
+
+        }
+    }
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setUser({ ...user, [e.target.name]: e.target.value });
+    }
+
+    function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+    
+        const form = new FormData();
+    
+        Object.keys(user).forEach(key => {
+            const value = user[key];
+            // Se o valor é um objeto, converter para string
+            if (value instanceof Blob) {
+                form.append(key, value);
+            } else {
+                form.append(key, String(value));
+            }
+        });
+    
+        api.patch(`users/edit/${id}`, form, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
             }
         }).then((response) => {
-            setUser(response.data);
-        }).catch(error => {
-            console.error("Error fetching user data:", error);
+            console.log(response.data);
+            alert('Atualizado com sucesso!');
+        }).catch((error) => {
+            console.log("Erro pode ser esse:", error);
+            alert('Erro ao atualizar');
         });
-    }, [token]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUser((prevUser) => ({
-            ...prevUser,
-            [name]: value
-        }));
-    };
+    }
+    
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        api.post('/users/update', user, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then(response => {
-            alert('Profile updated successfully');
-        }).catch(error => {
-            console.log("Error updating profile:", error);
-        });
-    };
+
 
     return (
         <section className={profile.ProfileContent}> 
             {obj?.authenticate && (
                 <>
                     <h1>Perfil</h1>
-                    <p>Preview da Imagem</p>
-                    <form onSubmit={handleSubmit}>
+                    
+
+                    {(user.image || preview) && (
+                        <img className={profile.profileImage} src={preview ? URL.createObjectURL(preview) : `http://localhost:5000/images/users/${user.image}` } alt={`${user.name}`} />
+                    )}
+
+
+
+                    <form method="post" onSubmit={onSubmit}>
                         <Inputs 
                             text="Imagem" 
                             type="file" 
                             name="image" 
                             placeholder="Envie uma imagem"
-                            handleOnChange={handleChange}
+                            handleOnChange={onFileChange}
                         />
                         <Inputs 
                             text="Nome" 
@@ -63,7 +109,7 @@ export function Profile () {
                             name="name" 
                             placeholder="Digite seu nome"
                             handleOnChange={handleChange}
-                            value={user?.name || ''}
+                            value={user.name}
                         />
                         <Inputs 
                             text="Email" 
@@ -71,7 +117,7 @@ export function Profile () {
                             name="email" 
                             placeholder="Digite seu email"
                             handleOnChange={handleChange}
-                            value={user.email || ''}
+                            value={user.email}
                         />
                         <Inputs 
                             text="Telefone" 
@@ -79,7 +125,7 @@ export function Profile () {
                             name="phone" 
                             placeholder="Digite seu telefone"
                             handleOnChange={handleChange}
-                            value={user.phone || ''}
+                            value={user.phone}
                         />
                         <Inputs 
                             text="Senha" 
@@ -95,7 +141,7 @@ export function Profile () {
                             placeholder="Confirme sua senha"
                             handleOnChange={handleChange}
                         />
-                        <button type="submit">Salvar</button>
+                        <button type="submit"> Salvar </button>
                     </form>
                 </>
             )}

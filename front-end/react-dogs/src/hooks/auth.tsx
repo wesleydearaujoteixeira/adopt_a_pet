@@ -69,13 +69,14 @@ export default function useAuth() {
 
             api.post('/users/login', user).then((response) => {
                 setAutenticate(true);
-                console.log(response.data);
+                console.log("User id aqui:  ", response.data.userId);
+                localStorage.setItem('userID', JSON.stringify(response.data.userId));
+                localStorage.setItem('tokenUserId', JSON.stringify(response.data.token));
                 navigate('/');
                 return response.data
             })
             .catch((err) => {
-                console.error(err.message);
-                throw new Error(err.message);
+                console.log(err.message);
             })
         }
 

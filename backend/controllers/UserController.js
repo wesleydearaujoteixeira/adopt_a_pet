@@ -143,9 +143,11 @@ module.exports = class UserController {
 
     static async checkUser (req, res) {
 
+        const id = req.params.id;
+
         try {
             // Sua lógica para encontrar o usuário
-            const currentUser = await User.findById(req.userId);
+            const currentUser = await User.findOne({id});
         
             // Verifique se currentUser não é nulo
             if (!currentUser) {

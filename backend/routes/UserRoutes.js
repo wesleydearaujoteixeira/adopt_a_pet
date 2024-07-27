@@ -20,6 +20,7 @@ router.get('/checkUser/:id', UserController.checkUser);
 router.get('/:id', UserController.getUserById);
 router.patch('/edit/:id', checkToken, imageUpload.single('image'), UserController.userUpdate);
 
+
 // Pet Routers 
 router.get('/', PetController.create);
 
