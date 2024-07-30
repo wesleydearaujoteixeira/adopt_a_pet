@@ -42,13 +42,13 @@ module.exports = class PetController {
 
         let available = true;        
 
-        const user = await User.findOne({_id: id});
+        const user = await User.findById(id);
 
         if(!user){
             res.status(422).json({message: " User not found "});
         }
 
-
+        
         const pet = new Pet({    
 
             name, 
@@ -62,6 +62,7 @@ module.exports = class PetController {
                 name: user.name,
                 image: user.image,
                 phone: user.phone   
+
             }
             
         });
@@ -70,7 +71,6 @@ module.exports = class PetController {
         images.map((image) => {
             pet.images.push(image.filename);
         });
-
 
         try {
 
@@ -109,6 +109,7 @@ module.exports = class PetController {
         try {
 
             const id = req.params.id;
+
             
             // Find user by ID
             const user = await User.findById(id);

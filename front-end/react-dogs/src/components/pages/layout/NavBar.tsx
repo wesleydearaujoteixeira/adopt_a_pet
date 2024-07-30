@@ -47,6 +47,10 @@ const NavBar = () => {
                             </li>
 
                             <li>
+                                <Link to={'/mypets'}> MyPets </Link>
+                            </li>
+
+                            <li>
                                 <Link to="/">Adotar</Link>
                             </li>
 

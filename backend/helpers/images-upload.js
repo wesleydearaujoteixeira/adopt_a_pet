@@ -34,16 +34,18 @@ const imageUpload = multer({
     fileFilter(req, file, cb) {
 
         if(!file.originalname.match(/\.(jpeg|jpg)$/)) {
-            return cb(new Error("Please, send only images jpeg or png"))
+            return cb(new Error("Please, send only images jpeg or jpg"))
         }
-
     cb(undefined, true);
 
     }
-
+    
 });
 
 
+
 module.exports = { imageUpload };
+
+
 
 

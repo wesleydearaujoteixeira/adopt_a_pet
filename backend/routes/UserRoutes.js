@@ -8,7 +8,6 @@ const checkToken = require('../helpers/verify-token');
 const { imageUpload } = require('../helpers/images-upload');
 
 
-
 // Controller's routes
 // Users Routers
 

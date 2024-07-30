@@ -1,0 +1,7 @@
+
+.selectInfo {
+      display: flex;
+      flex-direction: row;
+      gap: 1.1rem;
+
+}

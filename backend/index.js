@@ -21,13 +21,11 @@ const PetRouter = require('./routes/PetRouters');
 app.use('/users', router);
 app.use('/pets', PetRouter);
 
-
 mongoose.connection.once('open', () => {
     console.log('Conectado ao MongoDB');
+    
     app.listen(PORT, () => {
-      console.log(`Servidor rodando na porta  http://localhost:${PORT}/`);  
+      console.log(`Servidor rodando na porta http://localhost:${PORT}/`);  
   });
+
 });
-
-
-

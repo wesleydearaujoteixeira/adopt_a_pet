@@ -81,16 +81,13 @@ export default function useAuth() {
         }
 
 
-        function logout () {
-            
-                setTimeout(() => {
-                    localStorage.removeItem('token');
-                    setAutenticate(false);
-                    api.defaults.headers.Authorization = null;
-                }, 1000);  
-               
-    
-        }
+            function logout () {
+                        localStorage.removeItem('userID');
+                        localStorage.removeItem('tokenUserId');
+                        setAutenticate(false);
+                        api.defaults.headers.Authorization = null;
+                  
+             }
 
 
     return {authenticate,  register, logout, Login, setAutenticate }

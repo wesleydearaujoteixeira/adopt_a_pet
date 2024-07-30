@@ -21,8 +21,5 @@ petRouter.patch('/:id', verifyToken,  imageUpload.array('images'),  PetControlle
 petRouter.patch('/schedule/:id', verifyToken, PetController.schedule);
 petRouter.patch('/conclude/:id', verifyToken, PetController.concludePet);
 
-
-
-
-
 module.exports = petRouter;
+
