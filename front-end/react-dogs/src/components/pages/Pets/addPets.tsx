@@ -5,6 +5,7 @@ import './formPet.module.css';
 import { useAuthContext } from '../../../context/UserContext';
 import { api } from "../../../utils/api";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function AddPets() {
   const obj = useAuthContext();
@@ -22,6 +23,7 @@ export default function AddPets() {
   });
 
   const [preview, setPreview] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const colors = ['orange', 'cinza', 'vermelho', 'azul'];
 
@@ -75,7 +77,14 @@ export default function AddPets() {
             'Content-Type': 'multipart/form-data'
           }
         });
+        
         console.log(response.data);
+        alert('Pet cadastrado com sucesso!');
+
+        setTimeout(() => {
+          navigate('/mypets');
+        }, 500);
+
         // Handle success
       } catch (error) {
         console.error('Error submitting form:', error);

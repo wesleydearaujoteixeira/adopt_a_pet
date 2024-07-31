@@ -92,8 +92,6 @@ export function Profile () {
                         <img className={profile.profileImage} src={preview ? URL.createObjectURL(preview) : `http://localhost:5000/images/users/${user.image}` } alt={`${user.name}`} />
                     )}
 
-
-
                     <form method="post" onSubmit={onSubmit}>
                         <Inputs 
                             text="Imagem" 

@@ -69,7 +69,12 @@ export default function useAuth() {
 
             api.post('/users/login', user).then((response) => {
                 setAutenticate(true);
+
+                console.log(response.data);
                 console.log("User id aqui:  ", response.data.userId);
+                console.log("Seu Token é este:", response.data.token);
+                
+
                 localStorage.setItem('userID', JSON.stringify(response.data.userId));
                 localStorage.setItem('tokenUserId', JSON.stringify(response.data.token));
                 navigate('/');

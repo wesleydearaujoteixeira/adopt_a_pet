@@ -51,7 +51,7 @@ const NavBar = () => {
                             </li>
 
                             <li>
-                                <Link to="/">Adotar</Link>
+                                <Link to="/pet/dashboard">Adotar</Link>
                             </li>
 
                             <li onClick={() => Exit()}>
