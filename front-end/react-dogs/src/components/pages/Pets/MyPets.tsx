@@ -117,14 +117,14 @@ export default function MyPets () {
                               <div key={pet._id} className={petStyle.gridContent}>
                                   
                                   
-                                  <h3>Nome: {pet.name} </h3>
+                                  <h4>Nome: {pet.name} </h4>
                                     <h3>Idade: {pet.age} </h3>
                                     <h3>Peso: {pet.weight} </h3>
                                     <h3>Cor: {pet.color} </h3>
                                     <img className={petStyle.imageDashBoard} src={`${localhost}/images/pets/${pet.images[0]}`} alt="" />
                                     {pet.available ? (
 
-                                          <>
+                                          <div className={petStyle.btnAjust}>
                                           
                                           {pet.adopter && (
                                                 <button className={petStyle.btnConclude}
@@ -139,7 +139,7 @@ export default function MyPets () {
                                           <Link className={petStyle.btnEdit} to={`/pet/edit/${pet._id}`}> Editar </Link>
                                           <button onClick={() => deleteApet(pet._id)} className={petStyle.btnDelete}> Excluir </button>
 
-                                          </>
+                                          </div>
 
                                     ): 
                                     <p> Pet já adotado </p>

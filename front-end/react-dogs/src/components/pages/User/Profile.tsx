@@ -5,11 +5,21 @@ import profile from './profile.module.css';
 import { api } from '../../../utils/api';
 
 export function Profile () {
+
+
+    interface User {
+        name: string;
+        phone: string;
+        email: string;
+        password: string;
+        confirmpassword: string;
+        image: Blob | null;
+    }
     const obj = useAuthContext();
 
     const [preview, setPreview] = useState <string> ('');
 
-    const [user, setUser] = useState({
+    const [user, setUser] = useState <User> ({
         name: '',
         phone: '',
         email: '',
@@ -38,25 +48,31 @@ export function Profile () {
 
     function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files && e.target.files.length > 0) {
-            setUser({ ...user, [e.target.name]: e.target.files[0] });
-            const files: string = e.target.files[0]
-            setPreview(files)
-
+          const file = e.target.files[0];
+          setUser((prevUser) => ({
+            ...prevUser,
+            [e.target.name]: file,
+          }));
+    
+          const fileUrl = URL.createObjectURL(file);
+          setPreview(fileUrl);
         }
-    }
+      }
+
+
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setUser({ ...user, [e.target.name]: e.target.value });
     }
 
+    
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
     
         const form = new FormData();
     
-        Object.keys(user).forEach(key => {
+        (Object.keys(user) as (keyof User)[]).forEach(key => {
             const value = user[key];
-            // Se o valor é um objeto, converter para string
             if (value instanceof Blob) {
                 form.append(key, value);
             } else {
@@ -67,17 +83,29 @@ export function Profile () {
         api.patch(`users/edit/${id}`, form, {
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data'
             }
-        }).then((response) => {
+        })
+        .then(response => {
             console.log(response.data);
             alert('Atualizado com sucesso!');
-        }).catch((error) => {
-            console.log("Erro pode ser esse:", error);
-            alert('Erro ao atualizar');
+            // Limpar formulário, se necessário
+            // e.target.reset(); // Se estiver usando referências para os campos, ajuste conforme necessário
+        })
+        .catch(error => {
+            console.error('Erro ao atualizar:', error);
+            if (error.response) {
+                console.error('Erro no servidor:', error.response.data);
+                alert(`Erro no servidor: ${error.response.data.message}`);
+            } else if (error.request) {
+                console.error('Erro na solicitação:', error.request);
+                alert('Erro na solicitação. Por favor, tente novamente.');
+            } else {
+                console.error('Erro:', error.message);
+                alert(`Erro: ${error.message}`);
+            }
         });
-
     }
+    
 
 
 
@@ -89,7 +117,8 @@ export function Profile () {
                     
 
                     {(user.image || preview) && (
-                        <img className={profile.profileImage} src={preview ? URL.createObjectURL(preview) : `http://localhost:5000/images/users/${user.image}` } alt={`${user.name}`} />
+                        <img className={profile.profileImage} src={preview || `http://localhost:5000/images/users/${user.image}`}/>
+
                     )}
 
                     <form method="post" onSubmit={onSubmit}>

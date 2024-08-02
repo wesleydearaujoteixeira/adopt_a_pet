@@ -57,3 +57,30 @@ h1 {
     background-color: var(--primary-color--);
     color: #fff;
 }
+
+.action {
+    color: black;
+    display: none;
+
+}
+
+
+
+@media screen and (max-width: 800px) {
+    
+    #menu {
+        background-color: #ffd400;
+    }
+
+    .action {
+        color: black;
+        display: block;
+        background-color: #ffd400;
+
+    }
+
+    .Exibir {
+        display: none;
+    }
+    
+}

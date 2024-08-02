@@ -69,3 +69,43 @@ p {
       color: white;
       cursor: pointer;
 }
+
+
+@media screen and (max-width: 768px) {
+      .btnLogin {
+            margin-top: 1em;
+            width: 80%;
+            font-size: 2rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+            transition: all 0.5s;
+      }
+
+      .LoginContent form :nth-child(3) {
+            display: flex;
+            align-self: center;
+            width: 55%;
+            margin: 0 auto;
+            justify-content: center;
+            margin-bottom: 1em;
+      
+      }
+      .LoginContent form :nth-child(1) {
+            display: flex;
+            align-self: center;
+            width: 95%;
+            margin: 0 auto;
+      }
+
+      .LoginContent form :nth-child(2) {
+            display: flex;
+            align-self: center;
+            width: 95%;
+            margin: 0 auto;
+            margin-bottom: 1rem;
+      }
+      
+}

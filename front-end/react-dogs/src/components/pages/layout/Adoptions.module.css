@@ -36,3 +36,16 @@ span {
       height: 50px;
       background-color: #4caf50;
 }
+
+
+@media screen and (max-width: 768px) {
+
+      .adoptionContent {
+            display: flex;
+            justify-content: center;
+            width: 80vw;
+            margin: auto;
+      }
+      
+      
+}
