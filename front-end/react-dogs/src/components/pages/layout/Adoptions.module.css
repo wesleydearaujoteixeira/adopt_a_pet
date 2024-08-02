@@ -1,0 +1,38 @@
+.headerAdoptions {
+      font-size: 1.3rem;
+}
+
+.adoptionsImage {
+      width: 300px;
+}
+
+.adoptionContent {
+      display: flex;
+      justify-content: center;
+      width: 55vw;
+      margin: auto;
+}
+
+span {
+      color: blue;
+}
+
+.Span {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+}
+
+.Span p {
+      color: orangered;
+
+}
+
+.Span .adotado {
+      color: green;
+}
+
+.btnConclude {
+      width: 50px;
+      height: 50px;
+      background-color: #4caf50;
+}

@@ -1,0 +1,58 @@
+
+.image_content {
+      color: white;
+      background-color: #eaeaea;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+
+}
+
+.image_pet_home {
+      width: 250px;
+      height: 250px;
+      border-radius: 8px;
+      cursor: pointer;
+}
+
+.image_pet_home:hover {
+      transform: scale(1.1);
+      transition: transform 0.5s;
+}
+
+
+
+
+.details {
+      background-color: #e7c30d;
+      padding: 10px 10px;
+      margin-top: 2rem;
+      text-decoration: none;
+      font-size: 1.4rem;
+      font-weight: bold;
+      text-align: center;
+      color: #16479d;
+      border-radius: 8px;
+
+}
+
+.infoContent {
+      margin: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2em;
+}
+
+.adopter {
+      font-size: 1.2rem;
+      color: rgb(11, 219, 21);
+      font-weight: 800;
+      font-weight: bold;
+      text-shadow: 1px 1px 1px gray;
+}
+
+h3 {
+      color: #16479d;
+}

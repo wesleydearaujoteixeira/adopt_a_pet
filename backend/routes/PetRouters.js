@@ -15,11 +15,9 @@ petRouter.post('/create/:id', verifyToken, imageUpload.array('images'), PetContr
 petRouter.get('/', PetController.getALL);
 petRouter.get('/mypets/:id', verifyToken,  PetController.getAllUserPets);
 petRouter.get('/myadoptions/:id', verifyToken,  PetController.getUserAdoptions);
-petRouter.get('/:id', PetController.getPetById);
+petRouter.get('/:id', verifyToken, PetController.getPetById);
 petRouter.delete('/:id', verifyToken, PetController.deletePetById);
 petRouter.patch('/:id', verifyToken,  imageUpload.array('images'),  PetController.updatedPet);
 petRouter.patch('/schedule/:id', verifyToken, PetController.schedule);
 petRouter.patch('/conclude/:id', verifyToken, PetController.concludePet);
-
 module.exports = petRouter;
-

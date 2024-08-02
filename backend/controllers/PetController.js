@@ -10,7 +10,6 @@ module.exports = class PetController {
 
     static async create(req, res) {
 
-
         const id = req.params.id;
 
         const images = req.files;
@@ -134,40 +133,34 @@ module.exports = class PetController {
     
     }
 
-    static async getUserAdoptions(req, res) {
 
-        try {
-            const id = req.params.id;
-            
-            // Find user by ID
-            const user = await User.findById(id);
+static async getUserAdoptions(req, res) {
+    try {
+        const id = req.params.id;
+        
+        // Find user by ID
+        const user = await User.findById(id);
 
-            if (!user) {
-                return res.status(401).json({ message: "User not found" });
-            }
-    
-            // Find pets by user ID
-            const pets = await Pet.find({adopter_id: id }).sort('-createdAt');
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
-            if (!pets || pets.length === 0) {
+        // Find pets by adopter ID
+        const pets = await Pet.find({ 'adopter._id': new ObjectId(id) });
 
-                return res.status(422).json({ message: "Error, no pets logged for this user" });
-            
-            }
+        if (!pets || pets.length === 0) {
+            return res.status(422).json({ message: "Error, no pets logged for this user" });
+        }
 
-            // Respond with pets
-            res.status(200).json({ 
-                pets, 
-            });
-
+        // Respond with pets
+        res.status(200).json({ pets });
     } catch (error) {
         // Error handling
         res.status(500).json({ message: error.message });
-   
-
     }
-
 }
+
+    
 
 
 
@@ -179,7 +172,6 @@ module.exports = class PetController {
             res.status(422).json({message: "Invalid Id!"});
             return;
         }
-
 
         const pet = await Pet.findOne({_id: id});
 
@@ -315,14 +307,14 @@ static async schedule(req, res) {
         // Converta ambos os IDs para strings e compare
         if (pet.user._id.toString() === user._id.toString()) {
             return res.status(422).json({
-                message: "You can't schedule an appointment with your own pet."
+                message: "Você não pode agendar uma visita com o seu próprio Pet"
             });
         }
 
         if (pet.adopter) {
             if (pet.adopter._id.toString() === user._id.toString()) {
                 return res.status(422).json({
-                    message: "You already scheduled an appointment with this pet."
+                    message: "Você já agendou uma visita com este Pet"
                 });
             }
         }

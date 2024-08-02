@@ -11,14 +11,14 @@ const Home = () => {
     
   return (
 
+    <div> 
     <UserProvider>
           <NavBar/>
           <Outlet/>
           <Container/>    
           <Footer/>
     </UserProvider>
-
-  
+    </div>
   )
 }
 

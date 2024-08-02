@@ -22,7 +22,7 @@ const NavBar = () => {
 
     return (
         <nav className={styles.navBar}>
-            <Link to="/" className={styles.navBar_logo}> 
+            <Link to="/pet/dashboard" className={styles.navBar_logo}> 
                 <img src={Logo} alt="logo" />
                 <h1>Adopter A Pet</h1>
             </Link>
@@ -44,6 +44,10 @@ const NavBar = () => {
                         <>
                              <li>
                                 <Link to={'/profile'}> Profile </Link>
+                            </li>
+
+                            <li>
+                                <Link to={'/pet/myadoptions'}> My Adoptions </Link>
                             </li>
 
                             <li>

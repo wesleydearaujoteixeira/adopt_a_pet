@@ -81,6 +81,25 @@ export default function MyPets () {
          }
 
 
+         const concludeAdoption = (id: string) => {
+            api.patch(`/pets/conclude/${id}`, {}, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                })
+                 .then((response) => {
+                  alert('Você concluiu a adoção!')
+                  console.log(response.data)
+                  return response.data;
+
+                 }).catch(error => {
+                  console.log("Error:", error);
+                  alert('Erro ao concluir adoção!');
+                 })
+
+              }
+
+
       return (
             <div className={petStyle.petHeader_list }>
               {obj?.authenticate && (
@@ -108,7 +127,13 @@ export default function MyPets () {
                                           <>
                                           
                                           {pet.adopter && (
-                                                <button> Concluir adoção </button>
+                                                <button className={petStyle.btnConclude}
+                                                onClick={() => concludeAdoption(pet._id)}
+                                                > 
+                                                  Concluir adoção
+                                                  
+                                                   
+                                                </button>
                                           )}
                                           
                                           <Link className={petStyle.btnEdit} to={`/pet/edit/${pet._id}`}> Editar </Link>
@@ -119,7 +144,6 @@ export default function MyPets () {
                                     ): 
                                     <p> Pet já adotado </p>
                                     } 
-                                    <Link className={petStyle.btnDetails} to={`/pet/edit/${pet._id}`}> Detalhes </Link>
                                   
                               </div>
                         );
@@ -133,3 +157,4 @@ export default function MyPets () {
             </div>
       )
 }
+

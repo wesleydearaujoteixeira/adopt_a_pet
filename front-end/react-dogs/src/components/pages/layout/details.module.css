@@ -1,0 +1,88 @@
+.namePet {
+      font-size: 2rem;
+      color: black;
+      margin-left: 2rem;
+}
+
+.contentInfo {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+}
+
+.imageContent {
+      width: 230px;
+      border-radius: 10px;
+}
+
+
+.infoPet {
+      width: 1200px;
+      height: 1200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+}
+
+.imgProfile {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+}
+
+h3 {
+      margin-top: 2rem;
+}
+
+h2 {
+      margin-bottom: 2rem;
+}
+
+.btnSchedule {
+      background-color: green;
+      color: white;
+      padding: 10px 10px;
+      border-radius: 10px;
+      margin-top: 1rem;
+      cursor: pointer;
+      border: none;
+      font-size: 1em;
+      font-weight: bold;
+}
+
+.registerDetails {
+      background-color: green;
+      color: white;
+      padding: 10px 10px;
+      border-radius: 10px;
+      margin-top: 1rem;
+      cursor: pointer;
+      border: none;
+      font-size: 1em;
+      font-weight: bold;
+      text-decoration: none;
+      text-align: center;
+      width: 50%;
+      margin: auto;
+
+}
+
+.footerDetails {
+      margin-top: 2rem;
+      width: 600px;
+      height: 1200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+}
+
+
+.footerDetails h1 {
+      text-align: center;
+}

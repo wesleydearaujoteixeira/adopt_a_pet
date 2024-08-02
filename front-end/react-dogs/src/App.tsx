@@ -8,6 +8,8 @@ import MyPets from './components/pages/Pets/MyPets';
 import AddPets from './components/pages/Pets/addPets';
 import EditPet from './components/pages/Pets/EditPet';
 import Dashboard from './components/pages/layout/Dashboard';
+import Details from './components/pages/layout/Details';
+import MyAdoptions from './components/pages/layout/MyAdoptions';
 
 const router = createBrowserRouter([
   
@@ -44,6 +46,16 @@ const router = createBrowserRouter([
       {
         path: '/pet/dashboard',
         element: <Dashboard/>
+      },
+      
+      {
+        path: 'pet/:id',
+        element: <Details/>
+      },
+
+      {
+        path: 'pet/myadoptions',
+        element: <MyAdoptions/>
       }
     ]
   }
