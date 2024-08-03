@@ -11,7 +11,6 @@ const { imageUpload } = require('../helpers/images-upload');
 // Controller's routes
 // Users Routers
 
-
 router.post('/register', UserController.register);
 router.get('/data', UserController.data);
 router.post('/login', UserController.Login);
